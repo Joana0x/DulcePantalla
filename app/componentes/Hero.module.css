@@ -1,0 +1,41 @@
+/* Estilos para el componente Hero */
+
+/* Estilo principal del fondo del hero */
+.hero {
+  /*background: radial-gradient(
+      1200px 400px at 50% -20%,
+      rgba(58, 134, 255, 0.35),
+      transparent
+    ),
+    linear-gradient(180deg, rgba(27, 27, 38, 0.8), rgba(27, 27, 38, 0));*/
+  background: var(--background); /* Fondo sólido blanco */
+  padding: 4rem 0; /* Espaciado vertical */
+  /* border-bottom: 1px solid var(--border); /* Línea inferior divisoria */
+}
+
+/* Contenedor interno centrado */
+.inner {
+  width: min(
+    100% - 2rem,
+    var(--container)
+  ); /* Máximo ancho con márgenes laterales */
+  margin-inline: auto; /* Centra el contenido horizontalmente */
+  text-align: center; /* Centra el texto */
+}
+
+/* Botón de llamado a la acción (Call to Action) */
+.cta {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 999px; /* Bordes totalmente redondeados */
+  background: #8b2214; /* Color de fondo con variable global */
+  color: white;
+  font-weight: 700;
+  box-shadow: var(--shadow); /* Sombra definida en variables */
+}
+
+/* Efecto hover para el botón CTA */
+.cta:hover {
+  filter: brightness(1.1); /* Aumenta el brillo al pasar el cursor */
+}
