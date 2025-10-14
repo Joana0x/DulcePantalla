@@ -29,7 +29,7 @@ export default function Home() {
 
           {/* DERECHA */}
           <div className="nav-right">
-            <a className="login-link">INICIAR SESIÓN</a>
+            <a className="login-link">INICIAR SESIÓN.</a>
           </div>
         </nav>
       </header>
@@ -40,7 +40,7 @@ export default function Home() {
         <section className="section hero-section" aria-labelledby="hero-title">
           <div className="hero-header">
             <Image
-              src="/Logo.png"
+              src="/Logo 2.png"
               alt="Logo Dulce Pantalla"
               width={160}
               height={160}
