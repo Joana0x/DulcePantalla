@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Hero from "./componentes/Hero";
 import Footer from "./componentes/Footer";
-
+import ComentarioCarrusel from "./componentes/ComentarioCarrusel";
 
 //. carpeta donde estoy parado
 
@@ -84,13 +84,22 @@ export default function Home() {
               </article>
 
               <article className="famosa-card">
+
                 <img src="/img/rataoulle.jpg" alt="Ratatouille" />
+
+          
                 <h3>Ratatouille</h3>
                 <button className="btn-ver">VER RECETA</button>
               </article>
             </div>
           </div>
         </section>
+          <section className="section" aria-labelledby="comentarios-title">
+        <h2 id="comentarios-title" className="sr-only">Comentarios</h2>
+        <h2 id="section-title">COMENTARIOS</h2>
+
+        <ComentarioCarrusel />
+      </section>
 
         <section className="section" aria-labelledby="combo-title">
           {/* Contenedor principal con flexbox para alinear horizontalmente las dos secciones */}

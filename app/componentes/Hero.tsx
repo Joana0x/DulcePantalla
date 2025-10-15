@@ -5,7 +5,9 @@ import { useEffect, useRef, useState } from "react"; //importamos para que sea d
 // useState guarda valores que cambian con el tiempo
 import Image from "next/image";
 
+
 type Slide = { src: string; alt: string; caption?: string; link?: string };
+
 const SLIDES: Slide[] = [
   { src: "/cartas.jpg",     alt: "Pastel feliz cumpleaños Harry", caption: "Feliz cumpleaños, Harry" },
   { src: "/cer.jpg",  alt: "Cerveza de mantequilla",        caption: "Cerveza de mantequilla" },
@@ -22,6 +24,8 @@ export default function Hero() {
 
   const go = (n: number) => setIdx(p => (p + n + SLIDES.length) % SLIDES.length);
   const goTo = (n: number) => setIdx((n + SLIDES.length) % SLIDES.length);
+
+  
 
   // autoplay
   useEffect(() => {
@@ -68,3 +72,4 @@ export default function Hero() {
   </section>
 );
 }
+
