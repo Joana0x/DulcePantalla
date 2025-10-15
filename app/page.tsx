@@ -43,7 +43,7 @@ export default function Home() {
         <section className="section hero-section" aria-labelledby="hero-title">
           <div className="hero-header">
             <Image
-              src="/Logo 2.png"
+              src="/img/Logo 2.png"
               alt="Logo Dulce Pantalla"
               width={190}
               height={190}
