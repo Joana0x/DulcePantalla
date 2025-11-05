@@ -46,6 +46,7 @@ h3 {
 h1 {
   text-align: center;
   letter-spacing: 1px;
+  color: #ffffff;
 }
 h2 {
   text-align: center;
@@ -216,106 +217,104 @@ a:hover {
 
 /* ===== Carrusel  ===== */
 .carousel {
-  position: relative;
-  overflow: hidden;
+  position: relative; /*para colocar dentro del contenerdor*/
+  overflow: hidden; /* oculta lo que se sale del contenedor */
   border-radius: var(--radius);
   border: none;
-  box-shadow: none;
-  background: #fff;
+  box-shadow: none; /* sin sombra */
+  background: #fff; /* fondo blanco */
 }
 .carousel__media {
   position: relative;
-  width: 100%;
-  aspect-ratio: 16/9;
+  width: 100%;/* ocupa todo el ancho del contenedor padre*/
+  aspect-ratio: 16/9; /* no deforma la imagen*/
 }
 .carousel__img {
-  object-fit: cover;
+  object-fit: cover; /*cubre todo el contenedor sin deformar*/
 }
 
 .carousel__track {
-  display: flex;
-  transition: transform 0.5s ease-in-out;
+  display: flex; /* coloca las imágenes en horizontal */
+  transition: transform 0.5s ease-in-out; /* transición lenta */
   will-change: transform;
 }
 .carousel__slide {
-  min-width: 100%;
-  flex: 0 0 100%;
+  min-width: 100%; /* cada imagen ocupa todo el ancho del contenedor */
+  flex: 0 0 100%; /*mantiene el ancho fijo*/
 } 
 
 /* ===== Carrusel Comentarios ===== */
 .comentarios {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius);
+  position: relative; /* para colocar los botones dentro */
+  overflow: hidden; /* oculta lo que se sale del contenedor */
+  border-radius: var(--radius); 
   background: #fff;
-  padding: 1rem 0 2.5rem; /* espacio para dots */
-  outline: none;          /* para tab focus si quieres, o déjalo */
+  padding: 1rem 0 2.5rem; /* espacio para arriba */
 }
 
 .comentarios__track {
-  display: flex;
-  transition: transform 0.5s ease;
-  will-change: transform;
-  width: 100%;
+  display: flex; /* coloca las imágenes en horizontal */
+  transition: transform 0.5s ease; /* transición suave */
+  will-change: transform; 
+  width: 100%; /* ocupa todo el ancho del contenedor padre */
 }
 
 .comentarios__slide {
-  flex: 0 0 100%;
-  display: flex;
-  justify-content: center;
-  padding: 0 .5rem;
+  flex: 0 0 100%; /* cada imagen ocupa todo el ancho del contenedor */
+  display: flex; /* para centrar la imagen */
+  justify-content: center; /* centra horizontalmente */
+  padding: 0 .5rem; /* espacio lateral */
 }
 
 .comentarios__media {
   position: relative;
-  width: min(100%, 800px);     /* Más estrecha */
-  margin: 0.5rem auto;         /* Menos separación vertical */
-  overflow: hidden;
-  border-radius: 12px;         /* Esquinas suaves pero más compactas */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra más ligera */
+  width: min(100%, 800px); /* compara tamaños */
+  margin: 0.5rem auto; /* deja espacio arriba y abajo */
+  overflow: hidden; /* oculta lo que se sale del contenedor */
+  border-radius: 12px; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra ligera */
   background: #fff;
-  padding: 0.75rem 1rem;       /* Menos espacio interior */
-  font-size: 0.95rem;          /* Texto ligeramente más pequeño */
-  line-height: 1.4;            /* Altura de línea más ajustada */
+  padding: 0.75rem 1rem; /* espacio entre contenido y borde */
 }
 
 .comentarios__img {
-  display: block;
+  display: block; /* elimina espacio inferior */
   width: 100%;
-  height: auto;
+  height: auto; /* tamaño automático de la imagen */
   object-fit: contain;
 }
 
 /* Botones laterales */
 .comentarios__btn {
-  width: 56px;
+  width: 56px; /* tamaño delboton */
   height: 56px;
-  font-size: 34px;
+  font-size: 34px; /* tamaño del símbolo */
   border: none;
   border-radius: 50%;
-  background: rgba(123, 30, 59, 0.95);
-  color: #fff;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
+  background: rgba(123, 30, 59, 0.95); /*color del boton*/
+  color: #fff; /* color del símbolo */
+  display: grid; /*centra el icono*/
+  place-items: center; 
+  cursor: pointer; /* cambia a la mano */
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
   z-index: 11;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease; /* transición suave y anima al dar clic */
 }
 
-.comentarios__btn:hover { filter: brightness(1.05); }
-.comentarios__btn:active { transform: translateY(-50%) scale(0.96); }
-.comentarios__btn--prev { left: 8px; }
-.comentarios__btn--next { right: 8px; }
+.comentarios__btn:hover { filter: brightness(1.05); } /* ligero aumento de brillo al pasar el mouse */
+.comentarios__btn:active { transform: translateY(-50%) scale(0.96); } /* efecto hundido al hacer clic */
+.comentarios__btn--prev { left: 8px; } /*flecha a la izquierda*/
+.comentarios__btn--next { right: 8px; } /*flecha a la derecha*/
+
 /* Controles centrados al ancho de la tarjeta */
 .comentarios__controls{
-  position: absolute;
+  position: absolute; 
   inset: 0;
-  max-width: 1100px;            /*Espacio entre flecha e imagen */
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  max-width: 1100px; /* ancho máximo igual al contenedor */
+  margin: 0 auto; /* centrado horizontal */
+  display: flex; /*coloca las flchas en linea*/
+  align-items: center; /*alinea flechas al centro*/
+  justify-content: space-between; /*junta una flecha a cada lado*/
   z-index: 10;
 }
 
@@ -390,6 +389,7 @@ a:hover {
   font-weight: 700;
   border: 1px solid transparent;
   cursor: pointer;
+   
 }
 .btn-ver:hover {
   filter: brightness(1.05);
@@ -475,5 +475,15 @@ a:hover {
   display: flex;
   gap: 1rem;
   font-size: 1.5rem;
+}
+
+
+.full-bleed {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
 }
 

@@ -1,7 +1,7 @@
 import Image from "next/image";
-import Hero from "./componentes/Hero";
 import Footer from "./componentes/Footer";
 import ComentarioCarrusel from "./componentes/ComentarioCarrusel";
+import VideoInicio from "./componentes/VideoInicio";
 
 //. carpeta donde estoy parado
 
@@ -37,28 +37,24 @@ export default function Home() {
         </nav>
       </header>
 
+      {/* Video */}
+      <div className="full-bleed">
+        <VideoInicio
+          videoId="jOWSGDCMiE0"
+          startSeconds={156}
+          titulo="“Cualquiera puede cocinar”"
+          subtitulo="- Chef Gusteau"
+          overlay="bg-black/30"
+          heightClass="h-[50vh] md:h-[60vh]"
+        />
+      </div>
+
       {/* Contenido principal del sitio */}
       <main className="container">
-        {/* Sección de bienvenida o "hero section" */}
-        <section className="section hero-section" aria-labelledby="hero-title">
-          <div className="hero-header">
-            <Image
-              src="/img/Logo 2.png"
-              alt="Logo Dulce Pantalla"
-              width={190}
-              height={190}
-            />
-            <h1 id="hero-title">RECETAS DEL MES</h1>
-          </div>
-        </section>
+<div className="my-16"></div>
 
-        <Hero />
-        <section className="frase">
-          <blockquote>
-            “Cualquiera puede cocinar.”
-            <footer>- Chef Gusteau</footer>
-          </blockquote>
-        </section>
+            <footer></footer>
+        
         {/* Sección las más famosas del cine */}
         <section className="section" aria-labelledby="feat-title">
           <div className="famosas">
@@ -141,7 +137,7 @@ export default function Home() {
               <details className="faq-item">
                 <summary>
                   ¿Las recetas son iguales a las de las películas?
-                </ summary>
+                </summary>
                 <p>
                   Nos inspiramos en los sabores y estilos, pero adaptamos las
                   recetas para que sean prácticas y deliciosas en casa.
