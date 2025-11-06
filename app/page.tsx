@@ -1,8 +1,9 @@
+
 import Image from "next/image";
 import Footer from "./componentes/Footer";
 import ComentarioCarrusel from "./componentes/ComentarioCarrusel";
 import VideoInicio from "./componentes/VideoInicio";
-
+import Header from "./componentes/Header";
 //. carpeta donde estoy parado
 
 // Esta es la función principal de la página de inicio. Next.js muestra esto en la ruta "/"
@@ -10,32 +11,7 @@ export default function Home() {
   return (
     <>
       {/* Encabezado principal del sitio */}
-      <header className="site-header">
-        {/* Barra de navegación dentro del encabezado */}
-        <nav className="container nav">
-          {/* IZQUIERDA */}
-          <div className="nav-left">
-            <a className="brand">DULCE PANTALLA</a>
-          </div>
-
-          {/* CENTRO */}
-          <div className="nav-center">
-            <ul className="menu-center">
-              <li>
-                <a>INICIO</a>
-              </li>
-              <li>
-                <a>CATEGORIAS</a>
-              </li>
-            </ul>
-          </div>
-
-          {/* DERECHA */}
-          <div className="nav-right">
-            <a className="login-link">INICIAR SESIÓN</a>
-          </div>
-        </nav>
-      </header>
+      <Header showLoginButton={true} />
 
       {/* Video */}
       <div className="full-bleed">
