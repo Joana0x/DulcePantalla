@@ -92,7 +92,8 @@ export default function SignUpPage() {
   };
 
     return (<>
-      <Header showLoginButton={true} />*
+
+      <Header showLoginButton={true} />
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#F296C8]/20 via-[#FCE1EE]/40 to-[#F6BBD8]/30" />
         <div className="max-w-7xl mx-auto px-4 py-20 relative">
