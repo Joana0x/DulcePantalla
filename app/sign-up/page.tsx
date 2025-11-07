@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FirebaseError } from "firebase/app";
 
 import { useState } from "react";
-//import Header from "../componentes/Header";
+import Header from "../componentes/Header";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../lib/firebase-client";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -82,7 +82,7 @@ export default function SignUpPage() {
       .catch((error: unknown) => {
         if (error instanceof FirebaseError) {
           if (error.code === "auth/account-exists-with-different-credential") {
-            const email = error.customData?.["email"] as string | undefined; // ✅ sin error de tipo
+            const email = error.customData?.["email"] as string | undefined; 
             console.warn("Cuenta existente con diferente proveedor", email);
             return;
           }
@@ -92,7 +92,7 @@ export default function SignUpPage() {
   };
 
     return (<>
-      {/*<Header showLoginButton={true} />*/}
+      <Header showLoginButton={true} />*
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#F296C8]/20 via-[#FCE1EE]/40 to-[#F6BBD8]/30" />
         <div className="max-w-7xl mx-auto px-4 py-20 relative">
