@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FirebaseError } from "firebase/app";
 import { useState } from "react";
 import Header from "../componentes/Header";
+import Footer from "../componentes/Footer";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../lib/firebase-client";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -312,10 +313,9 @@ export default function SignUpPage() {
           </div>
         </div>
       </section>
-
-      <footer className="border-t border-slate-800 py-8 text-center text-sm text-slate-400">
-        Hecho con Tailwind · © 2025
-      </footer>
+    
+    <Footer />
+     
     </>
   );
 }
