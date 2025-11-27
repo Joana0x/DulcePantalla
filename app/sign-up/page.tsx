@@ -5,17 +5,31 @@ import { FirebaseError } from "firebase/app";
 import { useState } from "react";
 import Header from "../componentes/Header";
 import Footer from "../componentes/Footer";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../lib/firebase-client";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import { auth, db } from "../lib/firebase-client";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+
+type UserType = "consumidor" | "creador" | "";
 
 export default function SignUpPage() {
   const [name, setName] = useState("");
+  const [apellidos, setApellidos] = useState("");
+  const [nombre_usuario, setNombreUsuario] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
+
+  const [userType, setUserType] = useState<UserType>("");
+  const [plan, setPlan] = useState<string>(""); // solo para consumidores
+
+  const [success, setSuccess] = useState<string | null>(null);
 
   const mismatch =
     confirmPassword.length > 0 &&
@@ -24,20 +38,61 @@ export default function SignUpPage() {
 
   const [attempted, setAttempted] = useState(false);
 
+  async function saveUserProfile(uid: string) {
+    await setDoc(doc(db, "usuarios", uid), {
+      nombres: name,
+      apellidos: apellidos,
+      nombre_usuario: nombre_usuario,
+      email,
+      tipo_usuario: userType,
+      plan_suscripcion: userType === "consumidor" ? plan : null,
+      id_rol: userType === "creador" ? 2 : 1,
+      fecha_registro: serverTimestamp(),
+    });
+
+    if (userType === "consumidor" && plan) {
+      const suscripcionRef = doc(db, "suscripciones_usuario", uid);
+      await setDoc(suscripcionRef, {
+        id_usuario: uid,
+        id_plan: plan, // aquí usarías el id real del plan
+        fecha_inicio: serverTimestamp(),
+        fecha_fin: null,
+        estado: "activa",
+      });
+    }
+  }
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setAttempted(true);
     setError(null);
+    setSuccess(null);
 
     const msg = validate();
     if (msg) {
-      setError(msg); 
+      setError(msg);
       return;
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      const user = cred.user;
+
+      await saveUserProfile(user.uid);
+
       console.log("Usuario creado correctamente");
+      setSuccess(
+        "Tu cuenta se creó correctamente. ¡Bienvenida a Dulce Pantalla!"
+      );
+      setName("");
+      setApellidos("");
+      setNombreUsuario("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setUserType("");
+      setPlan("");
+      // setTermsAccepted(false);
     } catch (err: unknown) {
       if (err instanceof FirebaseError) {
         switch (err.code) {
@@ -61,8 +116,23 @@ export default function SignUpPage() {
   }
 
   function validate(): string | null {
+    if (!name.trim()) {
+      return "Escribe tu nombre";
+    }
+    if (!apellidos.trim()) {
+      return "Escribe tus apellidos";
+    }
+    if (!nombre_usuario.trim()) {
+      return "Escribe un nombre de usuario";
+    }
     if (password !== confirmPassword) {
       return "Las contraseñas no coinciden";
+    }
+    if (!userType) {
+      return "Selecciona qué tipo de usuario serás";
+    }
+    if (userType === "consumidor" && !plan) {
+      return "Selecciona un plan de suscripción";
     }
     if (!termsAccepted) {
       return "Debe aceptar los términos y condiciones";
@@ -70,30 +140,56 @@ export default function SignUpPage() {
     return null;
   }
 
-  const signUpWithGoogle = () => {
+  const signUpWithGoogle = async () => {
+    setError(null);
+    setSuccess(null);
+
+    const msg = validate();
+    if (msg) {
+      setError(msg);
+      return;
+    }
+
     const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth, provider)
-      .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        if (!credential) {
-          console.warn("No se pudo obtener las credenciales de Google");
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+
+      if (!credential) {
+        console.warn("No se pudo obtener las credenciales de Google");
+        return;
+      }
+
+      const user = result.user;
+      console.log("Usuario con Google:", user);
+
+      // Guarda también perfil y tipo de usuario
+      await saveUserProfile(user.uid);
+      setSuccess(
+        "Tu cuenta se creó correctamente con Google. ¡Bienvenida a Dulce Pantalla!"
+      );
+
+      setName("");
+      setApellidos("");
+      setNombreUsuario("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setUserType("");
+      setPlan("");
+      setTermsAccepted(false);
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        if (error.code === "auth/account-exists-with-different-credential") {
+          const email = error.customData?.["email"] as string | undefined;
+          console.warn("Cuenta existente con diferente proveedor", email);
+          setError("Esta cuenta ya existe con otro método de acceso");
           return;
         }
-        const token = credential?.accessToken;
-        const user = result.user;
-        console.log("Uusuario con Google:", user);
-        console.log("Token de acceso:", token);
-      })
-      .catch((error: unknown) => {
-        if (error instanceof FirebaseError) {
-          if (error.code === "auth/account-exists-with-different-credential") {
-            const email = error.customData?.["email"] as string | undefined;
-            console.warn("Cuenta existente con diferente proveedor", email);
-            return;
-          }
-        }
-        console.error("Error al iniciar sesión con Google", error);
-      });
+      }
+      console.error("Error al iniciar sesión con Google", error);
+      setError("Error al iniciar sesión con Google");
+    }
   };
 
   return (
@@ -101,7 +197,7 @@ export default function SignUpPage() {
       <Header showLoginButton={true} />
 
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-white z-0" /> {/* Fondo  */}
+        <div className="absolute inset-0 bg-white z-0" />
         <div className="max-w-7xl mx-auto px-4 py-20 relative z-10">
           <div className="md:grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
@@ -168,6 +264,49 @@ export default function SignUpPage() {
                     className="w-full rounded-xl border border-white bg-white px-3 py-2 text-red-900 outline-none focus:ring-2 focus:ring-red-950"
                   />
                 </div>
+
+                <div>
+                  <label
+                    htmlFor="apellidos"
+                    className="mb-1 block text-md font-medium text-white"
+                  >
+                    Apellidos
+                  </label>
+                  <input
+                    id="apellidos"
+                    name="apellidos"
+                    type="text"
+                    value={apellidos}
+                    onChange={(e) => {
+                      setApellidos(e.target.value);
+                    }}
+                    placeholder="Tus apellidos"
+                    required
+                    className="w-full rounded-xl border border-white bg-white px-3 py-2 text-red-900 outline-none focus:ring-2 focus:ring-red-950"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="nombre_usuario"
+                    className="mb-1 block text-md font-medium text-white"
+                  >
+                    Nombre de usuario
+                  </label>
+                  <input
+                    id="nombre_usuario"
+                    name="nombre_usuario"
+                    type="text"
+                    value={nombre_usuario}
+                    onChange={(e) => {
+                      setNombreUsuario(e.target.value);
+                    }}
+                    placeholder="Como te llamarán otros usuarios"
+                    required
+                    className="w-full rounded-xl border border-white bg-white px-3 py-2 text-red-900 outline-none focus:ring-2 focus:ring-red-950"
+                  />
+                </div>
+
                 <div>
                   <label
                     htmlFor="email"
@@ -189,6 +328,92 @@ export default function SignUpPage() {
                     className="w-full rounded-xl border border-white bg-white px-3 py-2 text-red-900 outline-none focus:ring-2 focus:ring-red-950"
                   />
                 </div>
+
+                {/* TIPO DE USUARIO */}
+                <div>
+                  <p className="mb-2 text-md font-medium text-white">
+                    ¿Cómo usarás Dulce Pantalla?
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      className={`flex-1 rounded-xl border px-3 py-2 text-sm font-semibold transition ${
+                        userType === "consumidor"
+                          ? "bg-white text-red-900 border-white shadow-md"
+                          : "bg-transparent text-white/80 border-white/70 hover:bg-white/10"
+                      }`}
+                      onClick={() => setUserType("consumidor")}
+                    >
+                      Soy consumidor
+                      <span className="block text-xs font-normal">
+                        Quiero disfrutar recetas y planes
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`flex-1 rounded-xl border px-3 py-2 text-sm font-semibold transition ${
+                        userType === "creador"
+                          ? "bg-white text-red-900 border-white shadow-md"
+                          : "bg-transparent text-white/80 border-white/70 hover:bg-white/10"
+                      }`}
+                      onClick={() => setUserType("creador")}
+                    >
+                      Soy creador
+                      <span className="block text-xs font-normal">
+                        Compartiré mis propias recetas
+                      </span>
+                    </button>
+                  </div>
+                  {attempted && !userType && (
+                    <p className="mt-1 text-sm text-white">
+                      Selecciona una opción.
+                    </p>
+                  )}
+                </div>
+
+                {/* PLANES SOLO SI ES CONSUMIDOR */}
+                {userType === "consumidor" && (
+                  <div>
+                    <p className="mb-2 text-md font-medium text-white">
+                      Elige tu plan de suscripción
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        className={`rounded-xl border px-3 py-3 text-sm text-left transition ${
+                          plan === "dulce-gratis"
+                            ? "bg-white text-red-900 border-white shadow-md"
+                            : "bg-transparent text-white/80 border-white/70 hover:bg-white/10"
+                        }`}
+                        onClick={() => setPlan("dulce-gratis")}
+                      >
+                        <span className="font-semibold">Dulce Gratis</span>
+                        <span className="block text-xs">
+                          Recetas básicas y acceso limitado
+                        </span>
+                      </button>
+                      <button
+                        type="button"
+                        className={`rounded-xl border px-3 py-3 text-sm text-left transition ${
+                          plan === "caramelo-premium"
+                            ? "bg-white text-red-900 border-white shadow-md"
+                            : "bg-transparent text-white/80 border-white/70 hover:bg-white/10"
+                        }`}
+                        onClick={() => setPlan("caramelo-premium")}
+                      >
+                        <span className="font-semibold">Caramelo Premium</span>
+                        <span className="block text-xs">
+                          Todas las recetas, sin anuncios
+                        </span>
+                      </button>
+                    </div>
+                    {attempted && !plan && (
+                      <p className="mt-1 text-sm text-white">
+                        Selecciona un plan para continuar.
+                      </p>
+                    )}
+                  </div>
+                )}
 
                 <div>
                   <label
@@ -259,9 +484,14 @@ export default function SignUpPage() {
                 {error && (
                   <p
                     role="alert"
-                    className="rounded-xl bg-[#f1cece] border border-[6b4343] p-2 text-sm text-[3c0d1c] "
+                    className="rounded-xl bg-[#f1cece] border border-[#6b4343] p-2 text-sm text-[#3c0d1c]"
                   >
                     {error}
+                  </p>
+                )}
+                {success && (
+                  <p className="rounded-xl bg-white border border-yellow-500 p-3 text-sm text-black font-semibold mt-2 text-center">
+                    {success}
                   </p>
                 )}
 
@@ -274,7 +504,7 @@ export default function SignUpPage() {
               </form>
 
               <div className="my-4 flex items-center gap-3">
-                <div className="h-px flex-1 bg-white" /> {/* Linea */}
+                <div className="h-px flex-1 bg-white" />
                 <span className="text-xs text-white">o</span>
                 <div className="h-px flex-1 bg-white" />
               </div>
@@ -283,11 +513,7 @@ export default function SignUpPage() {
                 className="w-full rounded-xl border border-amber-50 bg-[#6b4343] hover:bg-pink-950 px-4 py-2 font-medium text-white inline-flex items-center justify-center gap-2"
                 aria-label="Continuar con Google"
                 type="button"
-                onClick={async () => {
-                  try {
-                    await signUpWithGoogle();
-                  } catch {}
-                }}
+                onClick={signUpWithGoogle}
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -313,9 +539,8 @@ export default function SignUpPage() {
           </div>
         </div>
       </section>
-    
-    <Footer />
-     
+
+      <Footer />
     </>
   );
 }
