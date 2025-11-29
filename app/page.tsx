@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -9,7 +10,11 @@ import Footer from "../componentes/Footer";
 import ComentarioCarrusel from "../componentes/ComentarioCarrusel";
 import VideoInicio from "../componentes/VideoInicio";
 import Header from "../componentes/Header";
+
 import Image from "next/image";
+
+import Link from "next/link";
+
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -47,6 +52,10 @@ export default function Home() {
       <main className="container">
         <div className="my-16"></div>
 
+
+        <footer></footer>
+
+
         {/* Sección las más famosas del cine */}
         <section className="section" aria-labelledby="feat-title">
           <div className="famosas">
@@ -68,7 +77,9 @@ export default function Home() {
                 <button className="btn-ver">VER RECETA</button>
               </article>
               <article className="famosa-card">
-                <Image src="/img/rataoulle.jpg" alt="Ratatouille" width={400} height={300} />
+
+                <img src="/img/rataoulle.jpg" alt="Ratatouille" />
+
                 <h3>Ratatouille</h3>
                 <button className="btn-ver">VER RECETA</button>
               </article>
@@ -76,10 +87,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Comentarios */}
         <section className="section" aria-labelledby="comentarios-title">
-          <h2 id="comentarios-title" className="sr-only">Comentarios</h2>
+          <h2 id="comentarios-title" className="sr-only">
+            Comentarios
+          </h2>
           <h2 id="section-title">COMENTARIOS</h2>
+
           <ComentarioCarrusel />
         </section>
 
@@ -92,7 +105,14 @@ export default function Home() {
                 <article className="famosa-card">
                   <Image src="/img/monsters-inc-conos.jpg" alt="Conos de Nieve Monster Inc" width={400} height={300} />
                   <h3>Conos de Nieve Monster Inc</h3>
-                  <button className="btn-ver">VER RECETA</button>
+
+                  {/* Botón para ver la receta completa */}
+                  <Link
+                    href="/recetas/0YPvKGxgWAO5aTwVazyh"
+                    className="btn-ver"
+                  >
+                    VER RECETA
+                  </Link>
                 </article>
               </div>
             </div>
@@ -118,6 +138,26 @@ export default function Home() {
               <details className="faq-item">
                 <summary>¿Las recetas son únicamente de postres?</summary>
                 <p>No, también hay platos salados inspirados en escenas icónicas. ¡Hay sabores para todos los gustos!</p>
+ </details>
+              {/* Pregunta 4 */}
+              <details className="faq-item">
+                <summary>
+                  ¿Puedo sugerir una receta de mi película o serie favorita?
+                </summary>
+                <p>
+                  ¡Claro! Nos encanta recibir ideas. Puedes enviarlas desde la
+                  sección de contacto o por redes sociales.
+                </p>
+              </details>
+
+              {/* Pregunta 5 */}
+              <details className="faq-item">
+                <summary>¿Las recetas son unicamente de prostres?</summary>
+                <p>
+                  No, también hay platos salados inspirados en escenas icónicas.
+                  ¡Hay sabores para todos los gustos!
+                </p>
+
               </details>
             </div>
           </div>
