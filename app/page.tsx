@@ -1,17 +1,29 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { auth } from "../lib/firebase-client";
+import type { User } from "firebase/auth";
 
 import Image from "next/image";
-import Footer from "./componentes/Footer";
-import ComentarioCarrusel from "./componentes/ComentarioCarrusel";
-import VideoInicio from "./componentes/VideoInicio";
-import Header from "./componentes/Header";
-//. carpeta donde estoy parado
+import Footer from "../componentes/Footer";
+import ComentarioCarrusel from "../componentes/ComentarioCarrusel";
+import VideoInicio from "../componentes/VideoInicio";
+import Header from "../componentes/Header";
 
-// Esta es la función principal de la página de inicio. Next.js muestra esto en la ruta "/"
 export default function Home() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((u) => {
+      setUser(u as User | null);
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <>
       {/* Encabezado principal del sitio */}
-      <Header showLoginButton={true} />
+      <Header showLoginButton={!user} user={user} />
 
       {/* Video */}
       <div className="full-bleed">
@@ -19,7 +31,7 @@ export default function Home() {
           videoId="jOWSGDCMiE0"
           startSeconds={156}
           titulo="“Cualquiera puede cocinar”"
-          subtitulo="- Chef Gusteau"
+          subtitulo={user ? `¡Hola ${user.displayName ?? user.email}!` : "- Chef Gusteau"}
           overlay="bg-black/30"
           heightClass="h-[50vh] md:h-[60vh]"
         />
@@ -27,10 +39,8 @@ export default function Home() {
 
       {/* Contenido principal del sitio */}
       <main className="container">
-<div className="my-16"></div>
+        <div className="my-16"></div>
 
-            <footer></footer>
-        
         {/* Sección las más famosas del cine */}
         <section className="section" aria-labelledby="feat-title">
           <div className="famosas">
@@ -38,130 +48,89 @@ export default function Home() {
 
             <div className="famosas-grid">
               <article className="famosa-card">
-                <img src="/img/cenicienta.jpg" alt="Feliz cumpleaños Harry" />
-                <h3>Pastel de La Bellla Durmiente</h3>
+                <Image src="/img/cenicienta.jpg" alt="Pastel de La Bella Durmiente" width={400} height={300} />
+                <h3>Pastel de La Bella Durmiente</h3>
                 <button className="btn-ver">VER RECETA</button>
               </article>
 
               <article className="famosa-card">
-                <img src="/img/jumbo.jpg" alt="Cerveza de mantequilla" />
+                <Image src="/img/jumbo.jpg" alt="Gumbo de Tiana" width={400} height={300} />
                 <h3>Gumbo de Tiana</h3>
                 <button className="btn-ver">VER RECETA</button>
               </article>
 
               <article className="famosa-card">
-                <img src="/img/merida.jpg" alt="Merida" />
+                <Image src="/img/merida.jpg" alt="Pastelito de Merida" width={400} height={300} />
                 <h3>Pastelito de Merida</h3>
                 <button className="btn-ver">VER RECETA</button>
               </article>
 
               <article className="famosa-card">
-
-                <img src="/img/rataoulle.jpg" alt="Ratatouille" />
-
-          
+                <Image src="/img/rataoulle.jpg" alt="Ratatouille" width={400} height={300} />
                 <h3>Ratatouille</h3>
                 <button className="btn-ver">VER RECETA</button>
               </article>
             </div>
           </div>
         </section>
-          <section className="section" aria-labelledby="comentarios-title">
-        <h2 id="comentarios-title" className="sr-only">Comentarios</h2>
-        <h2 id="section-title">COMENTARIOS</h2>
 
-        <ComentarioCarrusel />
-      </section>
+        {/* Comentarios */}
+        <section className="section" aria-labelledby="comentarios-title">
+          <h2 id="comentarios-title" className="sr-only">Comentarios</h2>
+          <h2 id="section-title">COMENTARIOS</h2>
+          <ComentarioCarrusel />
+        </section>
 
+        {/* Recetas y preguntas */}
         <section className="section" aria-labelledby="combo-title">
-          {/* Contenedor principal con flexbox para alinear horizontalmente las dos secciones */}
           <div
             style={{
-              display: "flex", // activa el layout en fila
-              justifyContent: "space-between", // separa los elementos con espacio entre ellos
-              alignItems: "flex-start", // alinea arriba
-              gap: "2rem", // espacio entre columnas
-              flexWrap: "wrap", // permite que se acomode en móviles
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              gap: "2rem",
+              flexWrap: "wrap",
             }}
           >
-            {/* Sección de recetas a la izquierda */}
+            {/* Recetas */}
             <div className="deCero" style={{ flex: "1", minWidth: "300px" }}>
-              {/* Título de la sección de recetas */}
-              <h3 id="feat-title" className="center">
-                DE CERO A REPOSTERO
-              </h3>
-
-              {/* Grid de recetas, puedes agregar más artículos aquí */}
+              <h3 id="feat-title" className="center">DE CERO A REPOSTERO</h3>
               <div className="DeCero-grid">
                 <article className="famosa-card">
-                  {/* Imagen del postre inspirado en Monster Inc */}
-                  <img src="/img/monsters-inc-conos.jpg" />
-                  {/* Nombre del postre */}
+                  <Image src="/img/monsters-inc-conos.jpg" alt="Conos de Nieve Monster Inc" width={400} height={300} />
                   <h3>Conos de Nieve Monster Inc</h3>
-                  {/* Botón para ver la receta completa */}
                   <button className="btn-ver">VER RECETA</button>
                 </article>
               </div>
             </div>
 
-            {/* Sección de preguntas frecuentes a la derecha */}
+            {/* Preguntas frecuentes */}
             <div className="columna-preguntas">
-              {/* Título de la sección de preguntas */}
               <h3 id="faq-title">PREGUNTAS CON SABOR</h3>
 
-              {/* Pregunta 1 */}
               <details className="faq-item">
-                <summary>
-                  ¿Las recetas son iguales a las de las películas?
-                </summary>
-                <p>
-                  Nos inspiramos en los sabores y estilos, pero adaptamos las
-                  recetas para que sean prácticas y deliciosas en casa.
-                </p>
+                <summary>¿Las recetas son iguales a las de las películas?</summary>
+                <p>Nos inspiramos en los sabores y estilos, pero adaptamos las recetas para que sean prácticas y deliciosas en casa.</p>
               </details>
 
-              {/* Pregunta 2 */}
               <details className="faq-item">
-                <summary>
-                  ¿Necesito ser experto en repostería para seguir las recetas?
-                </summary>
-                <p>
-                  ¡Para nada! Están pensadas para todos los niveles, con
-                  instrucciones claras y pasos sencillos.
-                </p>
+                <summary>¿Necesito ser experto en repostería para seguir las recetas?</summary>
+                <p>¡Para nada! Están pensadas para todos los niveles, con instrucciones claras y pasos sencillos.</p>
               </details>
 
-              {/* Pregunta 3 */}
               <details className="faq-item">
-                <summary>
-                  ¿Se necesitan ingredientes difíciles de conseguir?
-                </summary>
-                <p>
-                  Usamos ingredientes accesibles. Si hay alguno especial, te
-                  damos alternativas fáciles.
-                </p>
+                <summary>¿Se necesitan ingredientes difíciles de conseguir?</summary>
+                <p>Usamos ingredientes accesibles. Si hay alguno especial, te damos alternativas fáciles.</p>
               </details>
 
-              {/* Pregunta 4 */}
-               <details className="faq-item">
-                <summary>
-                  ¿Puedo sugerir una receta de mi película o serie favorita?
-                </summary>
-                <p>
-                   ¡Claro! Nos encanta recibir ideas. Puedes enviarlas desde la
-                  sección de contacto o por redes sociales.
-                </p>
+              <details className="faq-item">
+                <summary>¿Puedo sugerir una receta de mi película o serie favorita?</summary>
+                <p>¡Claro! Nos encanta recibir ideas. Puedes enviarlas desde la sección de contacto o por redes sociales.</p>
               </details>
 
-              {/* Pregunta 5 */}
-               <details className="faq-item">
-                <summary>
-                  ¿Las recetas son unicamente de prostres?
-                </summary>
-                <p>
-                   No, también hay platos salados inspirados en escenas icónicas.
-                   ¡Hay sabores para todos los gustos!
-                </p>
+              <details className="faq-item">
+                <summary>¿Las recetas son únicamente de postres?</summary>
+                <p>No, también hay platos salados inspirados en escenas icónicas. ¡Hay sabores para todos los gustos!</p>
               </details>
             </div>
           </div>

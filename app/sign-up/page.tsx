@@ -3,15 +3,15 @@
 import Link from "next/link";
 import { FirebaseError } from "firebase/app";
 import { useState } from "react";
-import Header from "../componentes/Header";
-import Footer from "../componentes/Footer";
+import Header from "../../componentes/Header";
+import Footer from "../../componentes/Footer";
 
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { auth, db } from "../lib/firebase-client";
+import { auth, db } from "../../lib/firebase-client";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 type UserType = "consumidor" | "creador" | "";
