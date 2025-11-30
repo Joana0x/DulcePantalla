@@ -2,9 +2,9 @@
 
 import { useEffect, useState, FormEvent } from "react";
 import { useParams } from "next/navigation";
-import Header from "../../../componentes/Header";
-import Footer from "../../../componentes/Footer";
-import { db } from "../../../lib/firebase-client";
+import Header from "../../../../componentes/Header";
+import Footer from "../../../../componentes/Footer";
+import { db } from "../../../../lib/firebase-client";
 import type { Timestamp } from "firebase/firestore";
 
 import {

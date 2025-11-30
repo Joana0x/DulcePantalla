@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Header from "../../componentes/Header";
-import Footer from "../../componentes/Footer";
+import Header from "../../../componentes/Header";
+import Footer from "../../../componentes/Footer";
 //import { auth, db } from "../../lib/firebase-client";
-import { db } from "../../lib/firebase-client";
+import { db } from "../../../lib/firebase-client";
 import { useRouter } from "next/navigation";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
