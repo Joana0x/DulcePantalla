@@ -1,7 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&display=swap");
-@import "tailwindcss";
-
-/* ===== Variables ===== */
+@import "tailwindcss"; /* ===== Variables ===== */
 :root {
   --background: #ffffff;
   --text: #3c0d1c;
@@ -16,29 +14,23 @@
   --font-sans: "Cormorant Garamond", serif;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   --foreground: #3c0d1c;
-}
-
-/* ===== Base ===== */
+} /* ===== Base ===== */
 body {
   background: var(--background);
   color: var(--text);
   font-family: var(--font-sans);
   line-height: 1.6;
 }
-
 .container {
   width: min(100% - 2rem, var(--container));
   margin-inline: auto;
 }
-
 .section {
   padding: 1rem 0 2rem;
 }
 .section.center {
   text-align: center;
 }
-
-/* ===== Text ===== */
 h1,
 h2,
 h3 {
@@ -47,7 +39,6 @@ h3 {
   font-weight: 700;
   color: var(--foreground);
 }
-
 h1 {
   text-align: center;
   letter-spacing: 1px;
@@ -57,17 +48,15 @@ h2 {
   text-align: center;
   font-size: 3rem;
   letter-spacing: 1px;
-}
+} /* ajusta si quieres otro tamaño global */
 h3 {
+  font-family: "Cormorant Garamond", serif;
   font-size: 2.25rem;
   text-align: center;
 }
-
 p {
   margin: 0 0 1rem;
 }
-
-/* ===== Botón ===== */
 .btn {
   display: inline-block;
   padding: 0.75rem 1.5rem;
@@ -76,100 +65,52 @@ p {
   color: #fff;
   font-weight: 700;
   border: 1px solid transparent;
-}
-
-/* ========================================================= */
-/*               CARRUSEL DE COMENTARIOS (CORREGIDO)         */
-/* ========================================================= */
-
-.comentarios {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius);
-  background: #fff;
-  padding: 1rem 0 2.5rem;
-}
-
-.comentarios__track {
-  display: flex;
-  transition: transform 0.5s ease;
-  width: 100%;
-}
-
-.comentarios__slide {
-  flex: 0 0 100%;
-  display: flex;
-  justify-content: center;
-  padding: 0 .5rem;
-}
-
-.comentarios__media {
-  position: relative;
-  width: min(100%, 900px);
-  margin: 0.5rem auto;
-  overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  background: #fff;
-  padding: 0.75rem 1rem;
-  z-index: 2; /* asegura que esté por encima */
-}
-
-.comentarios__img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
-/* ----- Botones laterales ----- */
+} /* Controles centrados al ancho de la tarjeta */
 .comentarios__controls {
   position: absolute;
-  inset: 0;
-  max-width: 900px;
-  margin: 0 auto;
+  inset: 0; /* ocupa todo el alto del carrusel */
+  max-width: 900px; /* = ancho de .comentarios__media */
+  margin: 0 auto; /* centrado horizontal */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: 20; /* superior a la imagen */
-}
-
+  z-index: 10; /* por encima de la imagen */ /* IMPORTANTE: quitar pointer-events: none; */
+} /* Botones laterales: ahora más grandes y clicables */
 .comentarios__btn {
   width: 80px;
   height: 80px;
   border: none;
   border-radius: 999px;
-  background: rgba(123, 30, 59, 0.95);
+  background: rgba(123, 30, 59, 0.95); /* var(--brand) */
   color: #fff;
   font-size: 50px;
+  line-height: 1;
   display: grid;
   place-items: center;
   cursor: pointer;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, .18);
-  z-index: 30; /* asegura visibilidad */
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  z-index: 11;
 }
-
 .comentarios__btn:hover {
   filter: brightness(1.06);
 }
-
 .comentarios__btn:active {
   transform: scale(0.96);
 }
-
 @media (max-width: 640px) {
-  .comentarios__controls { max-width: 100%; padding: 0 .5rem; }
-  .comentarios__btn { width: 44px; height: 44px; font-size: 28px; }
+  .comentarios__controls {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  .comentarios__btn {
+    width: 44px;
+    height: 44px;
+    font-size: 28px;
+  }
 }
-
-/* ========================================================= */
-/*                    RESTO DEL CSS (SIN CAMBIOS)            */
-/* ========================================================= */
-
 a:hover {
   cursor: pointer;
-}
-
-/* ===== Header ===== */
+} /* ===== Header/Nav ===== */
 .site-header {
   position: sticky;
   top: 0;
@@ -178,20 +119,17 @@ a:hover {
   background-color: var(--brand);
   border-bottom: 1px solid var(--border);
 }
-
 .nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.9rem 0;
 }
-
 .brand {
   font-weight: 800;
   font-size: 1.2rem;
   color: var(--brand-600);
 }
-
 .menu {
   list-style: none;
   display: flex;
@@ -199,25 +137,268 @@ a:hover {
   margin: 0;
   padding: 0;
 }
-
 .menu a {
   color: var(--brand-600);
   font-weight: 600;
   opacity: 0.95;
 }
-
 .menu a:hover {
   opacity: 1;
 }
-
-/* ===== Footer ===== */
+.nav-left,
+.nav-center,
+.nav-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.nav-left {
+  justify-content: flex-start;
+}
+.nav-center {
+  justify-content: center;
+}
+.nav-right {
+  justify-content: flex-end;
+}
+.menu-center {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.menu-center a,
+.login-link {
+  color: var(--brand-600);
+  font-weight: 600;
+  opacity: 0.95;
+}
+.menu-center a:hover,
+.login-link:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+.hero-header {
+  display: flex;
+  align-items: center; /* centra verticalmente logo y texto */
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  position: relative;
+}
+.hero-header h1 {
+  flex: 1; /* ocupa todo el espacio disponible */
+  text-align: center; /* centra el texto */
+  font-size: 3.5rem;
+  letter-spacing: 1px; /* tamaño de fuente ajustable */
+  color: var(--text);
+  margin-right: 160px; /* espacio a la derecha para el logo */
+} /* ===== Hero spacing ===== */
+.section.hero-section {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  margin-top: -1rem;
+} /* ===== Carrusel ===== */
+.carousel {
+  position: relative; /*para colocar dentro del contenerdor*/
+  overflow: hidden; /* oculta lo que se sale del contenedor */
+  border-radius: var(--radius);
+  border: none;
+  box-shadow: none; /* sin sombra */
+  background: #fff; /* fondo blanco */
+}
+.carousel__media {
+  position: relative;
+  width: 100%; /* ocupa todo el ancho del contenedor padre*/
+  aspect-ratio: 16/9; /* no deforma la imagen*/
+}
+.carousel__img {
+  object-fit: cover; /*cubre todo el contenedor sin deformar*/
+}
+.carousel__track {
+  display: flex; /* coloca las imágenes en horizontal */
+  transition: transform 0.5s ease-in-out; /* transición lenta */
+  will-change: transform;
+}
+.carousel__slide {
+  min-width: 100%; /* cada imagen ocupa todo el ancho del contenedor */
+  flex: 0 0 100%; /*mantiene el ancho fijo*/
+} /* ===== Carrusel Comentarios ===== */
+.comentarios {
+  position: relative; /* para colocar los botones dentro */
+  overflow: hidden; /* oculta lo que se sale del contenedor */
+  border-radius: var(--radius);
+  background: #fff;
+  padding: 1rem 0 2.5rem; /* espacio para arriba */
+}
+.comentarios__track {
+  display: flex; /* coloca las imágenes en horizontal */
+  transition: transform 0.5s ease; /* transición suave */
+  will-change: transform;
+  width: 100%; /* ocupa todo el ancho del contenedor padre */
+}
+.comentarios__slide {
+  flex: 0 0 100%; /* cada imagen ocupa todo el ancho del contenedor */
+  display: flex; /* para centrar la imagen */
+  justify-content: center; /* centra horizontalmente */
+  padding: 0 0.5rem; /* espacio lateral */
+}
+.comentarios__media {
+  position: relative;
+  width: min(100%, 800px); /* compara tamaños */
+  margin: 0.5rem auto; /* deja espacio arriba y abajo */
+  overflow: hidden; /* oculta lo que se sale del contenedor */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra ligera */
+  background: #fff;
+  padding: 0.75rem 1rem; /* espacio entre contenido y borde */
+}
+.comentarios__img {
+  display: block; /* elimina espacio inferior */
+  width: 100%;
+  height: auto; /* tamaño automático de la imagen */
+  object-fit: contain;
+} /* Botones laterales */
+.comentarios__btn {
+  width: 56px; /* tamaño delboton */
+  height: 56px;
+  font-size: 34px; /* tamaño del símbolo */
+  border: none;
+  border-radius: 50%;
+  background: rgba(123, 30, 59, 0.95); /*color del boton*/
+  color: #fff; /* color del símbolo */
+  display: grid; /*centra el icono*/
+  place-items: center;
+  cursor: pointer; /* cambia a la mano */
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  z-index: 11;
+  transition: transform 0.2s ease; /* transición suave y anima al dar clic */
+}
+.comentarios__btn:hover {
+  filter: brightness(1.05);
+} /* ligero aumento de brillo al pasar el mouse */
+.comentarios__btn:active {
+  transform: translateY(-50%) scale(0.96);
+} /* efecto hundido al hacer clic */
+.comentarios__btn--prev {
+  left: 8px;
+} /*flecha a la izquierda*/
+.comentarios__btn--next {
+  right: 8px;
+} /*flecha a la derecha*/ /* Controles centrados al ancho de la tarjeta */
+.comentarios__controls {
+  position: absolute;
+  inset: 0;
+  max-width: 1100px; /* ancho máximo igual al contenedor */
+  margin: 0 auto; /* centrado horizontal */
+  display: flex; /*coloca las flchas en linea*/
+  align-items: center; /*alinea flechas al centro*/
+  justify-content: space-between; /*junta una flecha a cada lado*/
+  z-index: 10;
+} /* ===== Frase ===== */
+.frase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 3rem auto;
+  padding: 3rem 1rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.5rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #2b1810;
+} /* ===== Las más famosas ===== */
+.famosas {
+  text-align: center;
+  width: min(100% - 2rem, 1100px);
+  margin: 0 auto;
+}
+.famosas-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.75rem;
+}
+@media (max-width: 1024px) {
+  .famosas-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .famosas-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.famosa-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+  text-align: center;
+  height: 100%;
+}
+.famosa-card img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: calc(var(--radius) - 4px);
+  display: block;
+}
+.famosa-card h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.25rem;
+  margin: 0.75rem 0;
+  color: var(--text);
+}
+.btn-ver {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 700;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.btn-ver:hover {
+  filter: brightness(1.05);
+} /* ===== Preguntas frecuentes ===== */
+.faq-item {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* sombra suave */
+  transition: background 0.3s ease;
+} /* Título de cada pregunta */
+.faq-item summary {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--brand);
+  cursor: pointer;
+} /* Texto desplegado */
+.faq-item p {
+  margin-top: 0.5rem;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+.columna-preguntas {
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px;
+}
 .footer {
-  background-color: var(--brand);
+  background-color: var(--brand); /* vino */
   color: #fff;
   padding: 2rem 1rem;
   margin-top: 4rem;
 }
-
 .footer-container {
   display: flex;
   justify-content: space-between;
@@ -226,18 +407,63 @@ a:hover {
   max-width: var(--container);
   margin: 0 auto;
 }
-
+.footer-legales,
+.footer-social {
+  flex: 1;
+  min-width: 200px;
+}
 .footer-legales h4,
 .footer-social h4 {
   font-size: 1.2rem;
   margin-bottom: 1rem;
 }
-
+.footer-legales ul {
+  list-style: none;
+  padding: 0;
+}
+.footer-legales li {
+  margin-bottom: 0.5rem;
+}
+.footer-legales a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
 .social-icons {
   display: flex;
   gap: 1rem;
   font-size: 1.5rem;
 }
+.full-bleed {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+}
+button {
+  cursor: pointer;
+}
 
-button { cursor: pointer; }
+/* ============================
+   ESTILOS SOLO PARA CATEGORÍAS
+============================ */
+.header-categories-dropdown a {
+  color: #7f1d1d !important;      /* rojo vino */
+}
+
+.header-categories-dropdown a:hover {
+  background: #ffffff !important;
+  color: #a4152c !important;       /* rojo más fuerte */
+}
+
+/* ============================
+   SOLO PARA INICIO
+============================ */
+.login-link {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
 

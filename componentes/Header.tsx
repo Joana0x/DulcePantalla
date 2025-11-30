@@ -16,7 +16,10 @@ export default function Header({ showLoginButton = true, user }: Props) {
       <nav className="container nav">
         {/* IZQUIERDA */}
         <div className="nav-left">
-          <Link href={user ? "/dashboard" : "/"} className="brand text-red-950 font-bold">
+          <Link
+            href={user ? "/dashboard" : "/"}
+            className="brand text-red-950 font-bold"
+          >
             DULCE PANTALLA
           </Link>
         </div>
@@ -25,7 +28,10 @@ export default function Header({ showLoginButton = true, user }: Props) {
         <div className="nav-center">
           <ul className="menu-center flex gap-6">
             <li>
-              <Link href={user ? "/dashboard" : "/"} className="text-red-950 font-semibold">
+              <Link
+                href={user ? "/dashboard" : "/"}
+                className="text-red-950 font-semibold login-link"
+              >
                 INICIO
               </Link>
             </li>
@@ -36,9 +42,10 @@ export default function Header({ showLoginButton = true, user }: Props) {
                 CATEGORÍAS
               </button>
 
-              {/* DROPDOWN CORREGIDO */}
+              {/* DROPDOWN CON CLASE NUEVA */}
               <ul
                 className="
+                header-categories-dropdown
                 absolute left-0 mt-2 w-56 bg-rose-50 border border-rose-300 rounded-lg shadow-lg
                 opacity-0 invisible 
                 group-hover:opacity-100 group-hover:visible 
@@ -52,12 +59,17 @@ export default function Header({ showLoginButton = true, user }: Props) {
                   "Studio Ghibli",
                   "DreamWorks",
                   "Nickelodeon",
-                  "Cartoon Network",
+                  "Netflix",
                 ].map((studio) => (
-                  <li key={studio} className="border-b border-rose-200 last:border-none">
+                  <li
+                    key={studio}
+                    className="border-b border-rose-200 last:border-none"
+                  >
                     <Link
-                      href={`/categorias/${studio.toLowerCase().replace(/\s+/g, "-")}`}
-                      className="block px-4 py-2 text-red-950 text-lg font-bold hover:bg-white hover:text-red-700 transition-colors duration-200"
+                      href={`/categorias/${studio
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")}`}
+                      className="block px-4 py-2 text-lg font-bold transition-colors duration-200"
                     >
                       {studio}
                     </Link>
@@ -73,13 +85,12 @@ export default function Header({ showLoginButton = true, user }: Props) {
           {user ? (
             <div className="relative group">
               <button className="flex items-center gap-2 font-semibold text-white cursor-pointer">
-                {user.displayName ?? user.email}
-                <span>▼</span>
+                {user.displayName ?? user.email} <span>▼</span>
               </button>
 
               {/* Dropdown usuario */}
-              <div className="absolute right-0 mt-2 w-64 bg-white border border-rose-300 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20">
-                {/* Bloque superior con avatar + correo */}
+              <div className="absolute right-0 mt-2 w-64 bg-white border border-rose-300 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                {/* Bloque superior con avatar */}
                 <div className="flex items-center gap-3 p-4 border-b border-rose-200">
                   {user.photoURL ? (
                     <Image
@@ -127,7 +138,10 @@ export default function Header({ showLoginButton = true, user }: Props) {
             </div>
           ) : (
             showLoginButton && (
-              <Link href="/log-in" className="login-link cursor-pointer text-red-950 font-semibold">
+              <Link
+                href="/log-in"
+                className="login-link cursor-pointer text-red-950 font-semibold"
+              >
                 INICIAR SESIÓN
               </Link>
             )

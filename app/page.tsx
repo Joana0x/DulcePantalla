@@ -18,7 +18,7 @@ export default function Home() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u) => {
       if (u) {
-        router.push("/dashboard"); // 👈 si hay sesión, redirige al dashboard
+        router.push("/dashboard"); // redirige al dashboard
       }
       setLoading(false);
     });
