@@ -11,20 +11,55 @@ import ComentarioCarrusel from "../../componentes/ComentarioCarrusel";
 import VideoInicio from "../../componentes/VideoInicio";
 import Image from "next/image";
 
+import { db } from "../../lib/firebase-client";
+import { doc, getDoc } from "firebase/firestore";
+import Link from "next/link";
+type TipoUsuario = "creador" | "visualizador" | "admin" | string;
+
+interface UsuarioBD {
+  tipo_usuario?: TipoUsuario;
+}
+
 export default function Dashboard() {
   const [user, setUser] = useState<User | null>(null);
+    const [tipoUsuario, setTipoUsuario] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((u) => {
+   useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (u) => {
       if (!u) {
         router.push("/log-in");
-      } else {
-        setUser(u);
+        setLoading(false);
+        return;
       }
+
+      setUser(u);
+
+      try {
+        const ref = doc(db, "usuarios", u.uid);
+        const snap = await getDoc(ref);
+
+        if (snap.exists()) {
+          const data = snap.data() as UsuarioBD; 
+          console.log("datosUsuario:", data);
+          if (data.tipo_usuario) {
+            setTipoUsuario(data.tipo_usuario);
+          } else {
+            setTipoUsuario(null);
+          }
+        } else {
+          console.warn("No existe documento de usuario para:", u.uid);
+          setTipoUsuario(null);
+        }
+      } catch (error) {
+        console.error("Error al obtener datos extra del usuario:", error);
+        setTipoUsuario(null);
+      }
+
       setLoading(false);
     });
+
     return () => unsubscribe();
   }, [router]);
 
@@ -32,8 +67,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Header showLoginButton={false} user={user} />
-
+<Header showLoginButton={false} user={user} tipoUsuario={tipoUsuario} />
       <div className="full-bleed">
         <VideoInicio
           videoId="jOWSGDCMiE0"
@@ -135,7 +169,13 @@ export default function Dashboard() {
                     height={300}
                   />
                   <h3>Conos de Nieve Monster Inc</h3>
-                  <button className="btn-ver">VER RECETA</button>
+                    {/* Botón para ver la receta completa */}
+                  <Link
+                    href="/recetas/lAZZSYOqHO2bWBZTy48u"
+                    className="btn-ver"
+                  >
+                    VER RECETA
+                  </Link>
                 </article>
               </div>
             </div>

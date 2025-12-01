@@ -8,9 +8,10 @@ import Image from "next/image";
 type Props = {
   showLoginButton?: boolean;
   user?: User | null;
+  tipoUsuario?: string | null;
 };
 
-export default function Header({ showLoginButton = true, user }: Props) {
+export default function Header({ showLoginButton = true, user, tipoUsuario }: Props) {
   return (
     <header className="site-header">
       <nav className="container nav">
@@ -122,6 +123,16 @@ export default function Header({ showLoginButton = true, user }: Props) {
                     {user.email}
                   </span>
                 </div>
+
+                
+                  {tipoUsuario === "creador" && (
+                  <Link
+                    href="/recetas/crear"
+                    className="block w-full px-4 py-3 text-base font-bold text-red-900 hover:bg-rose-50 border-b border-rose-200"
+                  >
+                    + Crear receta
+                  </Link>
+                )}
 
                 {/* Botón cerrar sesión */}
                 <button

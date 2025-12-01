@@ -3,17 +3,20 @@
 import { useState } from "react";
 import Header from "../../../componentes/Header";
 import Footer from "../../../componentes/Footer";
-//import { auth, db } from "../../lib/firebase-client";
-import { db } from "../../../lib/firebase-client";
+import { auth, db } from "../../../lib/firebase-client";
 import { useRouter } from "next/navigation";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, doc, getDoc } from "firebase/firestore";
 
 type Ingrediente = {
   nombre: string;
   cantidad: string;
   unidad: string;
 };
-
+type UsuarioBD = {
+  nombre_usuario?: string;
+  nombres?: string;
+  apellidos?: string;
+};
 const CATEGORIAS = [
   "Disney",
   "Pixar",
@@ -24,6 +27,10 @@ const CATEGORIAS = [
 ];
 
 export default function CrearRecetaPage() {
+
+   // Usuario actual de Firebase
+    const user = auth.currentUser;
+
   //VARIABLES QUE USAMOS EN EL FORMULARIO
   const [titulo, setTitulo] = useState("");
   const [texto, setTexto] = useState("");
@@ -78,55 +85,84 @@ const [showSuccessModal, setShowSuccessModal] = useState(false);
   }
 
   //---------------------------------------------------------------------------------------
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setSuccess(null);
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault();
+  setError(null);
+  setSuccess(null);
 
-    const msg = validate();
-    if (msg) {
-      setError(msg);
-      return;
-    }
-
-    try {
-      // usuario actual (opcional si quieres saber quién creó la receta)
-      // const user = auth.currentUser;
-
-      // Limpia ingredientes totalmente vacíos
-      const ingredientesLimpios = ingredientes.filter(
-        (ing) =>
-          ing.nombre.trim() !== "" ||
-          ing.cantidad.trim() !== "" ||
-          ing.unidad.trim() !== ""
-      );
-
-      // Guardar en la colección "recetas"
-      await addDoc(collection(db, "recetas"), {
-        titulo,
-        texto,
-        procedimiento,
-        imagen,
-        categorias,
-        ingredientes: ingredientesLimpios,
-        //creadoPor: user ? user.uid : null,
-        creadoEn: serverTimestamp(),
-      });
-
-      setSuccess("Tu receta se guardó correctamente");
-setShowSuccessModal(true); 
-      // Limpiar formulario
-      setTitulo("");
-      setTexto("");
-      setProcedimiento("");
-      setImagen("");
-      setCategorias([]);
-      setIngredientes([{ nombre: "", cantidad: "", unidad: "" }]);
-    } catch (err) {
-      console.error("Error al guardar la receta:", err);
-      setError("No se pudo guardar la receta. Intenta de nuevo.");
-    }
+  const msg = validate();
+  if (msg) {
+    setError(msg);
+    return;
   }
+
+  // Asegurarnos de que hay usuario logueado
+  if (!user) {
+    setError("Debes iniciar sesión para crear una receta.");
+    return;
+  }
+
+  try {
+    // 1️⃣ Leer datos extra del usuario en la colección "usuarios"
+    const usuarioRef = doc(db, "usuarios", user.uid);
+    const usuarioSnap = await getDoc(usuarioRef);
+
+    let creadorNombre: string | null = null;
+
+    if (usuarioSnap.exists()) {
+      const datos = usuarioSnap.data() as UsuarioBD;
+
+      // Preferimos nombre_usuario; si no, usamos nombres + apellidos
+      if (datos.nombre_usuario && datos.nombre_usuario.trim() !== "") {
+        creadorNombre = datos.nombre_usuario;
+      } else if (datos.nombres || datos.apellidos) {
+        creadorNombre = `${datos.nombres ?? ""} ${datos.apellidos ?? ""}`.trim();
+      }
+    }
+
+    // Si aún así quedó vacío, al menos usamos el email
+    if (!creadorNombre && user.email) {
+      creadorNombre = user.email;
+    }
+
+    const ingredientesLimpios = ingredientes.filter(
+      (ing) =>
+        ing.nombre.trim() !== "" ||
+        ing.cantidad.trim() !== "" ||
+        ing.unidad.trim() !== ""
+    );
+
+    await addDoc(collection(db, "recetas"), {
+      titulo,
+      texto,
+      procedimiento,
+      imagen,
+      categorias,
+      ingredientes: ingredientesLimpios,
+
+      // Datos del creador
+      creadorUid: user.uid,
+      creadorEmail: user.email,
+      creadorNombre, // nombre para mostrar
+      creadoEn: serverTimestamp(),
+    });
+
+    setSuccess("Tu receta se guardó correctamente");
+    setShowSuccessModal(true);
+
+    // Limpiar formulario
+    setTitulo("");
+    setTexto("");
+    setProcedimiento("");
+    setImagen("");
+    setCategorias([]);
+    setIngredientes([{ nombre: "", cantidad: "", unidad: "" }]);
+  } catch (err) {
+    console.error("Error al guardar la receta:", err);
+    setError("No se pudo guardar la receta. Intenta de nuevo.");
+  }
+}
+
 
   //---------------------------------------------------------------------------------------
   //valida los campos del formulario
@@ -142,7 +178,7 @@ setShowSuccessModal(true);
   //---------------------------------------------------------------------------------------
   return (
     <>
-      <Header showLoginButton={true} />
+      <Header showLoginButton={false} user={user} />
 
     {showSuccessModal && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
