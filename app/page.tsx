@@ -36,16 +36,14 @@ export default function Home() {
       <Header showLoginButton={true} />
 
       {/* Video principal */}
-      <div className="full-bleed">
-        <VideoInicio
-          videoId="jOWSGDCMiE0"
-          startSeconds={156}
-          titulo="“Cualquiera puede cocinar”"
-          subtitulo="- Chef Gusteau"
-          overlay="bg-black/30"
-          heightClass="h-[50vh] md:h-[60vh]"
-        />
-      </div>
+      <VideoInicio
+        videoId="jOWSGDCMiE0"
+        startSeconds={156}
+        titulo="“Cualquiera puede cocinar”"
+        subtitulo="- Chef Gusteau"
+        overlay="bg-black/30 pointer-events-none"
+        heightClass="h-[50vh] md:h-[60vh]"
+      />
 
       <main className="container">
         <div className="my-16"></div>
@@ -65,7 +63,11 @@ export default function Home() {
                   height={300}
                 />
                 <h3>Pastel de La Bella Durmiente</h3>
-                <button className="btn-ver">VER RECETA</button>
+
+                {/* Botón para ver la receta completa */}
+               <Link href="/recetas/UBfUgspLlDVRboxBRred">
+  <span className="btn-ver">VER RECETA</span>
+</Link>
               </article>
               <article className="famosa-card">
                 <Image
@@ -75,7 +77,11 @@ export default function Home() {
                   height={300}
                 />
                 <h3>Gumbo de Tiana</h3>
-                <button className="btn-ver">VER RECETA</button>
+                {/* Botón para ver la receta completa */}
+               <Link href="/recetas/UBfUgspLlDVRboxBRred">
+  <span className="btn-ver">VER RECETA</span>
+</Link>
+                {" "}
               </article>
               <article className="famosa-card">
                 <Image
@@ -85,13 +91,19 @@ export default function Home() {
                   height={300}
                 />
                 <h3>Pastelito de Merida</h3>
-                <button className="btn-ver">VER RECETA</button>
+                {/* Botón para ver la receta completa */}
+               <Link href="/recetas/UBfUgspLlDVRboxBRred">
+  <span className="btn-ver">VER RECETA</span>
+</Link>
+                {" "}
               </article>
               <article className="famosa-card">
                 <img src="/img/rataoulle.jpg" alt="Ratatouille" />
-
                 <h3>Ratatouille</h3>
-                <button className="btn-ver">VER RECETA</button>
+                {/* Botón para ver la receta completa */}
+                <Link href="/recetas/UBfUgspLlDVRboxBRred" className="btn-ver">
+                  VER RECETA
+                </Link>{" "}
               </article>
             </div>
           </div>
