@@ -14,7 +14,7 @@ export default function VideoInicio({
   startSeconds = 0,
   titulo = '',
   subtitulo,
-  overlay = 'bg-black/35',
+  overlay = 'bg-black/35 pointer-events-none',
   heightClass = 'h-[70vh] md:h-[80vh]',
 }: Props) {
   const src =
