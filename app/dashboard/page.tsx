@@ -100,7 +100,10 @@ export default function Dashboard() {
                   height={300}
                 />
                 <h3>Pastel de La Bella Durmiente</h3>
-                <button className="btn-ver">VER RECETA</button>
+                 {/* Botón para ver la receta completa */}
+                <Link href="/recetas/UBfUgspLlDVRboxBRred"
+                 className="btn-ver">VER RECETA
+                </Link>
               </article>
               <article className="famosa-card">
                 <Image
@@ -110,7 +113,10 @@ export default function Dashboard() {
                   height={300}
                 />
                 <h3>Gumbo de Tiana</h3>
-                <button className="btn-ver">VER RECETA</button>
+                <Link href="/recetas/RIzDD320eGUqsxAMSPcx"
+                  className="btn-ver">
+                    VER RECETA
+                </Link>
               </article>
               <article className="famosa-card">
                 <Image
@@ -120,7 +126,10 @@ export default function Dashboard() {
                   height={300}
                 />
                 <h3>Pastelito de Merida</h3>
-                <button className="btn-ver">VER RECETA</button>
+                 {/* Botón para ver la receta completa */}
+                <Link href="/recetas/vHlFJiXolwCWWvRvRGKj"
+                 className="btn-ver">VER RECETA
+                </Link>
               </article>
               <article className="famosa-card">
                 <Image
@@ -130,7 +139,10 @@ export default function Dashboard() {
                   height={300}
                 />
                 <h3>Ratatouille</h3>
-                <button className="btn-ver">VER RECETA</button>
+                 {/* Botón para ver la receta completa */}
+                <Link href="/recetas/q4UHmNzHYfLGRosNu5VP" className="btn-ver">
+                  VER RECETA
+                </Link>{" "}
               </article>
             </div>
           </div>

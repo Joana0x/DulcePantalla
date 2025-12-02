@@ -65,9 +65,9 @@ export default function Home() {
                 <h3>Pastel de La Bella Durmiente</h3>
 
                 {/* Botón para ver la receta completa */}
-               <Link href="/recetas/UBfUgspLlDVRboxBRred">
-  <span className="btn-ver">VER RECETA</span>
-</Link>
+                <Link href="/recetas/UBfUgspLlDVRboxBRred"
+                 className="btn-ver">VER RECETA
+                </Link>
               </article>
               <article className="famosa-card">
                 <Image
@@ -78,10 +78,10 @@ export default function Home() {
                 />
                 <h3>Gumbo de Tiana</h3>
                 {/* Botón para ver la receta completa */}
-               <Link href="/recetas/UBfUgspLlDVRboxBRred">
-  <span className="btn-ver">VER RECETA</span>
-</Link>
-                {" "}
+                <Link href="/recetas/RIzDD320eGUqsxAMSPcx"
+                  className="btn-ver">
+                    VER RECETA
+                </Link>
               </article>
               <article className="famosa-card">
                 <Image
@@ -92,16 +92,15 @@ export default function Home() {
                 />
                 <h3>Pastelito de Merida</h3>
                 {/* Botón para ver la receta completa */}
-               <Link href="/recetas/UBfUgspLlDVRboxBRred">
-  <span className="btn-ver">VER RECETA</span>
-</Link>
-                {" "}
+                <Link href="/recetas/vHlFJiXolwCWWvRvRGKj"
+                 className="btn-ver">VER RECETA
+                </Link>
               </article>
               <article className="famosa-card">
                 <img src="/img/rataoulle.jpg" alt="Ratatouille" />
                 <h3>Ratatouille</h3>
                 {/* Botón para ver la receta completa */}
-                <Link href="/recetas/UBfUgspLlDVRboxBRred" className="btn-ver">
+                <Link href="/recetas/q4UHmNzHYfLGRosNu5VP" className="btn-ver">
                   VER RECETA
                 </Link>{" "}
               </article>
